@@ -6,6 +6,8 @@ def lambda_handler(event, context):
     print("Received event: " + json.dumps(event, indent=2))
     SG = (event.get('Security_Group'))
     SG_region = (event.get('Security_Group_Region'))
+    Port = (event.get('Port'))
+    Protocol = (event.get('Protocol'))
     client = (event.get('Ip_client'))
     connection = boto3.client('ec2', region_name=SG_region)
     action = (event.get('action'))
@@ -15,15 +17,15 @@ def lambda_handler(event, context):
                 GroupId=SG,
                     IpPermissions=[
                         {
-                            'FromPort': 3389,
-                            'IpProtocol': 'tcp',
+                            'FromPort': Port,
+                            'IpProtocol': Protocol,
                             'IpRanges': [
                                 {
                                     'CidrIp': client,
                                     'Description': 'RDP connection from client',
                                 },
                             ],
-                            'ToPort': 3389,
+                            'ToPort': Port,
                         },
                     ],
                 ),
@@ -39,15 +41,15 @@ def lambda_handler(event, context):
                 GroupId=SG,
                     IpPermissions=[
                         {
-                            'FromPort': 3389,
-                            'IpProtocol': 'tcp',
+                            'FromPort': Port,
+                            'IpProtocol': Protocol,
                             'IpRanges': [
                                 {
                                     'CidrIp': client,
                                     'Description': 'RDP connection from client',
                                 },
                             ],
-                            'ToPort': 3389,
+                            'ToPort': Port,
                         },
                     ],
                 ),
@@ -57,4 +59,3 @@ def lambda_handler(event, context):
             response = "Error en la remoción del security group"
             return response
         
-
