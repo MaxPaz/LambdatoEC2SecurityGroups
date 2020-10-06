@@ -3,20 +3,18 @@
 
 # The information received by the function should be as the following:
 
-# --------- For Adding a Security Group Rule --------
-# {
-#   "Security_Group":"sg-0a47d09070c824389",
-#    "Security_Group_Region":"us-east-1",
-#    "Ip_client":"10.10.10.1/32",
-#    "action": "add"
-# }
+ --------- For Adding a Security Group Rule --------
+{
+"Security_Group":"sg-0a47d09070c824389",		//Security Group ID
+"Security_Group_Region":"us-east-1",				//Region
+"Ip_client":"10.10.10.10/32",    						//IP/Mask
+"action": "add"															//action: add
+}
 
-# --------- For Removing a Security Group Rule ------
-# {
-#   "Security_Group":"sg-0a47d09070c824389",
-#    "Security_Group_Region":"us-east-1",
-#    "Ip_client":"10.10.10.1/32",
-#    "action": "remove"
-# }
-
-
+ --------- For Removing a Security Group Rule ------
+{
+"Security_Group":"sg-0a47d09070c824389",		//Security Group ID
+"Security_Group_Region":"us-east-1",				//Region
+"Ip_client":"10.10.10.1/32",								//IP/Mask
+"action": "remove"													//action: remove
+}
