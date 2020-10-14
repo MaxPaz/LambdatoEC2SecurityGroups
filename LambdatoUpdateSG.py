@@ -1,6 +1,10 @@
 import boto3
 import json
 import os
+from datetime import date
+
+datetime = str
+dynamodb = boto3.client('dynamodb')
 
 
 def lambda_handler(event, context):
@@ -35,6 +39,16 @@ def lambda_handler(event, context):
                     ],
                 ),
             print(response)
+            today = date.today()
+            datetime = today.strftime("%d/%m/%Y")
+            dynamodb.put_item(TableName='SG_Data', 
+                Item={  
+                        'CreationDate':{'S':(datetime)},
+                        'IP':{'S':(client)},
+                        'SG':{'S':(SG)}
+                    }
+                )
+            
             return {
                 'statusCode': '200',
                 'body': json.dumps(response),
@@ -71,6 +85,15 @@ def lambda_handler(event, context):
                     ],
                 ),
             print(response)
+            today = date.today()
+            datetime = today.strftime("%d/%m/%Y")
+            value = dynamodb.delete_item(TableName='SG_Data', 
+                    Key={  
+                        'CreationDate':{'S':(datetime)},
+                        'IP':{'S':(client)}
+                        }
+                    )
+            print (value)
             return {
                 'statusCode': '200',
                 'body': json.dumps(response),
@@ -79,7 +102,7 @@ def lambda_handler(event, context):
                 }
             }
         except Exception:
-            response = "Error en la remoción del security group"
+            response = "Error en la remocion del security group"
             return {
                 'statusCode': '200',
                 'body': json.dumps(response),
@@ -87,3 +110,4 @@ def lambda_handler(event, context):
                 'Content-Type': 'application/json',
                 }
             }
+        
