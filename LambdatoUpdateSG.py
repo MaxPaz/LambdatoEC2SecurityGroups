@@ -2,15 +2,20 @@ import boto3
 import json
 import os
 
+
 def lambda_handler(event, context):
     print("Received event: " + json.dumps(event, indent=2))
-    SG = (event.get('Security_Group'))
-    SG_region = (event.get('Security_Group_Region'))
-    Port = (event.get('Port'))
-    Protocol = (event.get('Protocol'))
-    client = (event.get('Ip_client'))
+    SG = event["queryStringParameters"]["Security_Group"]
+    print (SG)
+    SG_region = event["queryStringParameters"]["Security_Group_Region"]
+    print (SG_region)
+    Port = 3389
+    Protocol = event["queryStringParameters"]["Protocol"]
+    print (Protocol)
+    client = event["queryStringParameters"]["Ip_client"]
+    print (client)
     connection = boto3.client('ec2', region_name=SG_region)
-    action = (event.get('action'))
+    action = event["queryStringParameters"]["action"]
     if action == "add" :
         try:
             response = connection.authorize_security_group_ingress(
@@ -30,10 +35,22 @@ def lambda_handler(event, context):
                     ],
                 ),
             print(response)
-            return response
+            return {
+                'statusCode': '200',
+                'body': json.dumps(response),
+                'headers': {
+                'Content-Type': 'application/json',
+                }
+            }
         except Exception:
             response = "Error en la carga del security group"
-            return response
+            return {
+                'statusCode': '200',
+                'body': json.dumps(response),
+                'headers': {
+                'Content-Type': 'application/json',
+                }
+            }
     
     if action == "remove" :
         try:
@@ -54,8 +71,19 @@ def lambda_handler(event, context):
                     ],
                 ),
             print(response)
-            return response
+            return {
+                'statusCode': '200',
+                'body': json.dumps(response),
+                'headers': {
+                'Content-Type': 'application/json',
+                }
+            }
         except Exception:
             response = "Error en la remoción del security group"
-            return response
-        
+            return {
+                'statusCode': '200',
+                'body': json.dumps(response),
+                'headers': {
+                'Content-Type': 'application/json',
+                }
+            }
