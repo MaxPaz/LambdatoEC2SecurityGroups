@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             print(response)
             today = date.today()
             datetime = today.strftime("%d/%m/%Y")
-            dynamodb.put_item(TableName='SG_Data', 
+            dynamodb.put_item(TableName='TableName',  # set your table name between quotes
                 Item={  
                         'CreationDate':{'S':(datetime)},
                         'IP':{'S':(client)},
@@ -57,7 +57,7 @@ def lambda_handler(event, context):
                 }
             }
         except Exception:
-            response = "Error en la carga del security group"
+            response = "security group error"
             return {
                 'statusCode': '200',
                 'body': json.dumps(response),
@@ -87,7 +87,7 @@ def lambda_handler(event, context):
             print(response)
             today = date.today()
             datetime = today.strftime("%d/%m/%Y")
-            value = dynamodb.delete_item(TableName='SG_Data', 
+            value = dynamodb.delete_item(TableName='TableName',  # set your table name between quotes 
                     Key={  
                         'CreationDate':{'S':(datetime)},
                         'IP':{'S':(client)}
@@ -102,7 +102,7 @@ def lambda_handler(event, context):
                 }
             }
         except Exception:
-            response = "Error en la remocion del security group"
+            response = "security group error"
             return {
                 'statusCode': '200',
                 'body': json.dumps(response),
